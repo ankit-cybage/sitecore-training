@@ -1,0 +1,45 @@
+﻿@using SC91Training.Feature.Navigation
+@using SC91Training.Foundation.SitecoreExtensions.Extensions
+@model SC91Training.Feature.Navigation.Models.NavigationItems
+
+<div class="collapse navbar-collapse" id="fablesNavDropdown">
+    <ul class="nav navbar-nav">
+        @if(Model != null && Model.NavItems != null)
+        {
+            foreach(var item in Model.NavItems)
+            {
+                var hasChildren = item.Children != null && item.Children.NavItems.Any() && item.ShowChildren;
+                var cssClass = String.Empty;
+                if (hasChildren)
+                {
+                    cssClass += " dropdown";
+                }
+
+        <li class="@cssClass">
+            @if (hasChildren)
+            {
+                <a href="@item.Url" class="dropdown-toggle text-uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    @Html.Sitecore().Field(Templates.Navigable.Fields.NavigationTitle, item.Item)
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="sub-nav2">
+                    @foreach(var child in item.Children.NavItems)
+                    {
+                        <li>
+                            <a href="@child.Url" class="dropdown-item">
+                                @Html.Sitecore().Field(Templates.Navigable.Fields.NavigationTitle, child.Item)
+                            </a>
+                        </li>
+                    }
+                </ul>
+                    }
+                    else
+                    {
+                    <a class="text-uppercase" href="@item.Url" target="@item.Target">
+                        @Html.Sitecore().Field(Templates.Navigable.Fields.NavigationTitle, item.Item)
+                    </a>
+                    }
+            </li>
+            }
+        }
+    </ul>
+</div>

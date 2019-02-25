@@ -1,0 +1,19 @@
+﻿@using SC91Training.Feature.Identity
+@using SC91Training.Feature.Identity.Repositories
+@using SC91Training.Foundation.SitecoreExtensions.Extensions
+@using Sitecore.Links
+@model Sitecore.Mvc.Presentation.RenderingModel
+
+@{ 
+    var identity = IdentityRepository.Get(Model.Item);
+    if(identity == null)
+    {
+        return;
+    }
+    var homeUrl = Sitecore.Context.Site?.GetStartItem()?.Url() ?? "/";
+    var hasTagline = identity.FieldHasValue(Templates.Identity.Fields.LogoTagLine);
+}
+
+<a class="navbar-brand fables-logo-brand pl-0" href="@homeUrl">
+    @Html.Sitecore().ImageField(Templates.Identity.Fields.Logo, identity, mh: 50, cssClass: "fables-logo")
+</a>
